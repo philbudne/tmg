@@ -36,6 +36,7 @@ pr2:	comment\pr2
 	putcharcl
 	parse(last);
 
+/* PLB: added start label */
 first:	parse(( fref = { <start: rc x > 1 *}))
 	getfref line = { 2 <:> 1 };
 
