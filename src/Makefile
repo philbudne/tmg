@@ -35,6 +35,18 @@ tmgl7a:	tmgl7a.t tmgl1
 
 ################
 
+# apply changes as a series of patches,
+# in case any need to be undone.
+tmgl7b.t: tmgl7a.t $(echo 7patch/??-*.patch)
+	-mv -f tmgl7b.t save/tmgl7b.t.`date '+%Y%m%d%H%M%S'`
+	cp tmgl7a.t tmgl7b.t.tmp
+	for PATCH in 7patch/??-*.patch; do \
+		patch tmgl7b.t.tmp $$PATCH; \
+	done
+	mv tmgl7b.t.tmp tmgl7b.t
+
+################
+
 tta.s:	tmgl7a tmgl7a.t
 	./tmgl7a tmgl7a.t > tta.s
 

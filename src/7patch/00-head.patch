@@ -1,0 +1,13 @@
+--- tmgl7a.t	2021-08-21 17:01:00.928879117 -0400
++++ tmgl7b.t	2021-08-22 15:00:03.278918422 -0400
+@@ -5,6 +5,10 @@
+  * output PDP-7 code but uses PDP-11 builtins (ie; parse, not doparse)
+  * and therefore character sets must be in -11 format (word per char).
+  *
++ * tmgl7b.t is initially being created from tmgl7a.t using a series
++ * of patch (diff) files to convert the source to be compatible with
++ * the available PDP-7 primatives.
++ *
+  * Ops not used by this file and not present in PDP-7 support code
+  * (eg post-increment) have been excised, but pre and post decrement and
+  * pre-increment are (currently) used below (ie; when this compiled
