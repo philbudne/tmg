@@ -33,7 +33,6 @@ pr1:	comment\pr1
 pr2:	comment\pr2
 	parse(line)\pr2
 	diag(error)\pr2
-	putcharcl
 	parse(last);
 
 /* PLB: added start label */
@@ -59,8 +58,7 @@ labels:	label labels/done = { 2 * 1 };
 label:	name <:> = { 1 <:> };
 
 /* PDP-7 boilerplate: */
-/* multiply is temporary: use shift for char tables (just use octal??) */
-last:	= { <st=0100> * <fi=0200> * <MULTIPLY: jms halt> * <NOT: jms halt> * };
+last:	= { <st=0100> * <fi=0200> * };
 
 comment: </*>
 co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
@@ -143,7 +141,7 @@ ifeasy:	[easy==1?];
 special: <=> (rname | remote(trule))
 		= (1){ $1 <rt > 1 }
 	| <<> literal = (1){ $1 <rx > 1 }
-	| <*> = (1){ $1 <gx nl> }
+	| <*> = (1){ $1 <rx nl> }
 	| <[> expr
 		( <?> = {<ro fi>}
 		| = {<_p>} )
@@ -217,14 +215,9 @@ lv1:	<[>/done bundle expr <]> = { 2 * 1 * <_f> }\lv1;
 assign:	<=> ignore(none) ( infix = { 1 * <_u> }
 			| = { <_st> } );
 
-/* PLB: want to eliminate multiply op (replace with shifts for charmasks?
-   but want to be able to process this file with itself to view output
- */
-
 infix:	smark ignore(none)
 	( <+> not((<+> not((<+>)) )) = {<ad>}
 	| <-> = {<sb>}
-	| <*> = {<rf MULTIPLY>}
 	| <|> = {<or>}
 	| <^> = {<xo>}
 	| <&> = {<an>}
@@ -270,11 +263,6 @@ cherr:	diag(( ={<too many char classes>} ));
 
 zeron:	[n=0];
 testn:	[++n<400?];
-
-putcharcl: zeron [classes=0] 
-	parse(( = { * <classtab:> * } ))
-ptc1:	[w = *(wordsz*n+&classes)] parse((octal(w) = {1*}))
-	bundle testn\ptc1;
 
 classmask: 0;
 nclass:	0;
