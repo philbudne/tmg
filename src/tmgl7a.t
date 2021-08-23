@@ -218,7 +218,7 @@ assign:	<=> ignore(none) ( infix = { 1 * <_u> }
 			| = { <_st> } );
 
 infix:	smark ignore(none)
-	( <+> not((<+> not((<+>)) )) = {<ad>}
+	( <+> = {<ad>}
 	| <-> = {<sb>}
 	| <|> = {<or>}
 	| <^> = {<xo>}
@@ -235,12 +235,10 @@ infix:	smark ignore(none)
 
 prefix:	smark ignore(none)
 	( <&> = {<_lvXXX>}
-	| <++> = {<_ibXXX>}
 	);
 
 suffix:	smark ignore(none)
-	( <++> = {<_iaXXX>}
-	| <--> = {<_daXXX>}
+	( <--> = {<_daXXX>}
 	);
 
 unary:	( <-> = {<mi>}
