@@ -204,7 +204,7 @@ rva:	<?> rv <:> rv fref fref
 
 prime:
 	lv suffix/done = { 2 * 1 }
-	| prefix lv = { 1 * 2 }
+	| <&> lv = { <rm > 1 <;ro fi;addr> }
 	| <(> expr <)> 
 	| unary prime = { 1 * 2 }
 	| remote(number) = { <_l;> 1 };
@@ -231,10 +231,6 @@ infix:	smark ignore(none)
 	| <<> = {<lt>}
 	| <>>	(  <>> = {<sr>}
 		| = {<gt>} )
-	);
-
-prefix:	smark ignore(none)
-	( <&> = {<_lvXXX>}
 	);
 
 suffix:	smark ignore(none)
