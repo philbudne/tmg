@@ -5,6 +5,10 @@
  * output PDP-7 code but uses PDP-11 builtins (ie; parse, not doparse)
  * and therefore character sets must be in -11 format (word per char).
  *
+ * tmgl7b.t is initially being created from tmgl7a.t using a series
+ * of patch (diff) files to convert the source to be compatible with
+ * the available PDP-7 primatives.
+ *
  * Ops not used by this file and not present in PDP-7 support code
  * (eg post-increment) have been excised, but pre and post decrement and
  * pre-increment are (currently) used below (ie; when this compiled
@@ -39,7 +43,7 @@ pr2:	comment\pr2
 first:	parse(( fref = { <start: rc x > 1 *}))
 	getfref line = { 2 <:> 1 };
 
-error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy 
+error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy
 	( <;> = {<;>} | null )
 	= { * <??? error: > 2 1 * };
 
@@ -74,12 +78,12 @@ stt1:	bundle	( frag = (1){ 2(nil) * 1(q1) }\stt1
 prc:	smark ignore(none) <proc(>;
 
 plst:	list(pident)/null remote((octal(npa)))
-	= { <params;> * 1 * };
+	= { <params;> 1 * };
 
 pident:	ident newtab(pat,npa);
 
-tlst:	<;>/null [i=0] list((name [i++])) remote((octal(i)))
-	= { <push;> * 1 * 2 * };
+tlst:	<;>/null [i=0] list((name [i =+ 1])) remote((octal(i)))
+	= { <push;> 1 * 2 * };
 
 frag:	prule = (1){ 1(nil,q1) }
 	| labels noelem = (1){ 1 };
@@ -88,10 +92,10 @@ frag:	prule = (1){ 1(nil,q1) }
 
 prule:	[sndt=ndt] disj
 	( <|> [ndt=sndt] fref
-		( ifeasy prule = (2){ 3(nil,nil) * <salt;> * 2 *
-				 1(q2,q1) * 2 <:> }
-		| prule fref = (2){ 4({ * <alt;> * 1},q1) * <goto;> * 3 *
-				1 <:> 2(q2,q1) * 3 <:>} )
+		( ifeasy prule = (2){3(nil,nil)*<salt;>2*
+				 1(q2,q1)*2<:>}
+		| prule fref = (2){4({*<alt;>1},q1)*<goto;>3*
+				1<:>2(q2,q1)* 3<:>} )
 		noelem
 	| () );
 
@@ -110,12 +114,12 @@ pprim:	( special
 			( <(> ignore(blanks) list(parg) <)>
 				= (1){$1 2 * 1}
 			| = (1){$1 1}  )))
-	( (</> = { <alt;> * } | <\> = { <salt;> * })
+	( (</> = {<alt;>} | <\> = {<salt;>})
 		rname = (1){3(nil)*$1 2 1}
 	| () );
 
 pdot:	<.>/done ignore(none) ident\alias
-	([dtt?] | table(dtt) [ndt=0]) [ndt++];
+	([dtt?] | table(dtt) [ndt=0]) [ndt =+ 1];
 spdot:	<.> ignore(none) not(( any(letter) ))
 alias:	newtab(dtt,ndt);
 
@@ -129,7 +133,7 @@ specparg: number
 		| push(3,dtt,ndt,sndt) [dtt=0]
 			prule <)> oldtab(dtt)
 			( ifelem = {1(nil,xbit) }
-			| = {1(nil,nil) * <x no;>} 
+			| = {1(nil,nil)*<x no;>}
 		)	);
 
 iseasy:	[easy = 1];
@@ -153,7 +157,7 @@ rname:	( name tabval(pat,npa)/done
 
 trule:	oldtab(ptt)
 	( tbody
-	| <(> (number|tra) <)> tbody = {<gpar;> * 2 * 1 } );
+	| <(> (number|tra) <)> tbody = {<gpar;> 2 * 1 } );
 tra:	list(tident) octal(npt);
 
 tident:	ident newtab(ptt,npt);
@@ -170,7 +174,7 @@ telem:	<<> literal = { <gx > 1 }
 	| name te1\done te2\done;
 
 te1:	tabval(dtt,ndt) tdot = tpt;
-te2:	tabval(ptt,npt) = { <gq > 1 };
+te2:	tabval(ptt,npt) = {<gq >1};
 
 tdot:	(<.> number | ={<0>})
 	( <(> list(targ) <)> | null)
@@ -198,16 +202,16 @@ rv1:	bundle	( infix prime = { 3 * 1 * 2 }\rv1
 		| rva = { 2 * 1 }
 		| () );
 rva:	<?> rv <:> rv fref fref 
-	= { <_t;> * <alt;> * 2 * 4 * <salt;> * 1 * 2 <:> 3 * 1 <:> };
+	= { <_t;alt;> * 2 * 4 * <salt;> * 1 * 2 <:> 3 * 1 <:> };
 
 prime:
 	lv suffix/done = { 2 * 1 }
 	| prefix lv = { 1 * 2 }
 	| <(> expr <)> 
 	| unary prime = { 1 * 2 }
-	| remote(number) = { <_l;> * 1 };
+	| remote(number) = { <_l;> 1 };
 
-lv:	( rname = { <_l;> * 1 }
+lv:	( rname = { <_l;> 1 }
 	| <(> lv <)>
 	| <*> prime = { 1 * <_rv> } )
 lv1:	<[>/done bundle expr <]> = { 2 * 1 * <_f> }\lv1;
@@ -287,10 +291,10 @@ cl16:   0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
 
 done:	;
 
-create:	[csym++]
+create:	[csym =+ 1]
 getcsym: octal(csym) = { <_> 1 };
 
-fref:	[fsym++]
+fref:	[fsym =+ 1]
 getfref: octal(fsym) = { <__> 1 };
 
 not:	params(1) $1/done fail;
