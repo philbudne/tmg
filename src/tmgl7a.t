@@ -272,7 +272,7 @@ ident:	smark ignore(none) any(letter) string(alpha);
 oldtab:	params(1) [$1?]/done discard($1) [$1=0];
 
 newtab:	params(2) ([$2?] | table($2) [$1=0])
-	enter($2,i) [$2[i] = $1++];
+	enter($2,i) [$2[i] = $1] [$1 =+ 1];
 
 tabval:	params(2) [$2?] find($2,i) [i=$1-$2[i]] octal(i);
 
