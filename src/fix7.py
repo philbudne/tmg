@@ -30,6 +30,9 @@ for line in sys.stdin.readlines():
 
     # split up string lits
     # wondering if lit strings were dumped out by symoct (in octal)?!
+    # OR if PDP-7 TMGL only had two-char lits?
+    # OR whether a looping rule with char(nogt) char(nogt) would work
+    #   to peel of character pairs?
     def fixstr(m):
         s = m.string[m.start()+1:m.end()-1]
         out = []
