@@ -12,6 +12,7 @@ TMGB=	$(PDP7_UNIX)/src/other/pbtz.s
 # implicit rules for creating thing.7 (runnable under a7out)
 # from thing.t using "make thing.7"
 # (thing.t must exist in local directory)
+# NOTE: make thing.7 when only .t exists will create AND remove .s file!
 
 .SUFFIXES: .7 .t
 
@@ -26,7 +27,8 @@ TMGB=	$(PDP7_UNIX)/src/other/pbtz.s
 ################
 
 all:
-	@echo 'type "make mytfile.s" or "make mytfile.7"'
+	@echo 'targets: tmgl7a, tmgl7b.t, mytfile.s, mytfile.7'
+	@echo '	 where mytfile.t is a TMGL source file in this directory'
 
 ################
 # build local binary using C port of PDP-11 TMG
@@ -48,15 +50,7 @@ tmgl7b.t: tmgl7a.t $(echo 7patch/??-*.patch)
 
 ################
 
-tta.s:	tmgl7a tmgl7a.t
-	./tmgl7a tmgl7a.t > tta.s
-
-ttb.s:	tta.s fix7.py
-	python fix7.py < tta.s > ttb.s
-
-################
-
-# hhh.s is hand made!
 clean:
 	rm -rf build
-	rm -f core *.7 *.7n hhh hello hello.s tmgl7a a.out tt[ab].s *~ \#*
+	rm -f core *.7 *.7n tmgl7a a.out tt[ab].s *~ \#*
+	rm -f hello_world.s hello_world.7 hello_world.7n
