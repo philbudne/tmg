@@ -30,6 +30,11 @@ all:
 	@echo 'targets: tmgl7a, tmgl7b.t, mytfile.s, mytfile.7'
 	@echo '	 where mytfile.t is a TMGL source file in this directory'
 
+# tmgl7a is a PDP-11 style source file, not a PDP-7 style source file!!
+tmgl7a.s tmgl7a.7 tmgl7a.7n:
+	@echo 'STOP: make sense'
+	@false
+
 ################
 # build local binary using C port of PDP-11 TMG
 
