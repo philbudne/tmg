@@ -1,7 +1,7 @@
---- tmgl7a.t	2021-08-22 22:09:39.126424321 -0400
-+++ tmgl7b.t.save	2021-08-22 22:13:32.790604707 -0400
-@@ -43,7 +43,7 @@
- first:	parse(( fref = { <start: rc x > 1 *}))
+--- tmgl7a.t	2021-08-23 01:47:16.733294738 -0400
++++ tmgl7b.t	2021-08-23 01:47:23.657420021 -0400
+@@ -48,7 +48,7 @@
+ first:	parse(( fref = { <st=0100> * <fi=0200> * <start: rc x > 1 *}))
  	getfref line = { 2 <:> 1 };
  
 -error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy
@@ -9,8 +9,8 @@
  	( <;> = {<;>} | null )
  	= { * <??? error: > 2 1 * };
  
-@@ -64,7 +64,7 @@
- last:	= { <st=0100> * <fi=0200> * };
+@@ -69,7 +69,7 @@
+ last:	= { };
  
  comment: </*>
 -co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
@@ -18,7 +18,7 @@
  
  statement: [csym=0] oldtab(dtt) oldtab(pat)
  	( prc plst tlst <)> = (1){2 1 }
-@@ -119,7 +119,7 @@
+@@ -124,7 +124,7 @@
  
  pdot:	<.>/done ignore(none) ident\alias
  	([dtt?] | table(dtt) [ndt=0]) [ndt =+ 1];
@@ -27,21 +27,17 @@
  alias:	newtab(dtt,ndt);
  
  parg:	rname | remote(specparg);
-@@ -200,11 +200,10 @@
- 		| rva = { 2 * 1 }
+@@ -205,8 +205,7 @@
  		| () );
- rva:	<?> rv <:> rv fref fref 
--	= { <_t;alt;> * 2 * 4 * <salt;> * 1 * 2 <:> 3 * 1 <:> };
-+	= { <_t;alt;> * 2 * 4 * <salt;> 1 * 2 <:> 3 * 1 <:> };
  
  prime:
 -	lv suffix/done = { 2 * 1 }
 -	| <&> lv = { <rm > 1 <;ro fi;addr> }
-+	<&> lv = { <rm 1; ro fi; addr> }
++	<&> lv = { <rm > 1 <;ro fi;addr> }
  	| <(> expr <)> 
  	| unary prime = { 1 * 2 }
- 	| remote(number) = { <_l;> 1 };
-@@ -233,10 +232,6 @@
+ 	| remote(number) = { <rm > 1 };
+@@ -235,10 +234,6 @@
  		| = {<gt>} )
  	);
  
@@ -52,7 +48,7 @@
  unary:	( <-> = {<mi>}
  	| <~> = {<cm>}
  	);
-@@ -257,11 +252,11 @@
+@@ -259,11 +254,11 @@
  remote:	params(1) create parse(rem1,$1);
  rem1:	params(1) getcsym $1 = { 2 <=.> * 1 * };
  
@@ -66,7 +62,7 @@
  
  oldtab:	params(1) [$1?]/done discard($1) [$1=0];
  
-@@ -279,16 +274,16 @@
+@@ -281,16 +276,16 @@
  
  nil:	{};
  
@@ -93,8 +89,3 @@
  
  csym:	0;
  fsym:	0;
-@@ -302,4 +297,3 @@
- npa:	0;	/*number of parsing rule params*/
- ptt:	0;	/*table of params of translation*/
- npt:	0;	/*number of params of translation*/
--i:	0;

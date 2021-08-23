@@ -16,6 +16,12 @@
  *
  * Some rough spots are being smoothed over temporarily
  * by running output through fix7.py
+ *
+ * NOTE!! This file likely covered by Caldera Ancient Unix licence, see:
+ * https://www.bell-labs.com/usr/dmr/www/calderalicense2000.html
+ * https://slashdot.org/story/02/01/24/0146248/caldera-releases-original-unices-under-bsd-license
+ * https://www.tuhs.org/Archive/Caldera-license.pdf (dated 2002, covers v6)
+ * https://www.tech-insider.org/internet/research/2003/0823.html
  */
 /****************************************************************/
 /* Implementation of TMG in TMGL. */
@@ -39,8 +45,7 @@ pr2:	comment\pr2
 	diag(error)\pr2
 	parse(last);
 
-/* PLB: added start label */
-first:	parse(( fref = { <start: rc x > 1 *}))
+first:	parse(( fref = { <st=0100> * <fi=0200> * <start: rc x > 1 *}))
 	getfref line = { 2 <:> 1 };
 
 error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy
@@ -61,7 +66,7 @@ labels:	label labels/done = { 2 * 1 };
 label:	name <:> = { 1 <:> };
 
 /* PDP-7 boilerplate: */
-last:	= { <st=0100> * <fi=0200> * };
+last:	= { };
 
 comment: </*>
 co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
@@ -125,7 +130,7 @@ alias:	newtab(dtt,ndt);
 parg:	rname | remote(specparg);
 
 specparg: number
-	| <<> longlit
+	| <<> lit
 	| <*> = { <\n> }
 	| <(> ( <)> = { <x no;> }
 		| push(3,dtt,ndt,sndt) [dtt=0]
@@ -151,7 +156,7 @@ special: <=> (rname | remote(trule))
 
 rname:	( name tabval(pat,npa)/done
 	| <$> number )
-	= { <[-> 1 <\<1]> };
+	= { <rs > 1 }; /* PLB: guessing! */
 
 trule:	oldtab(ptt)
 	( tbody
@@ -180,12 +185,12 @@ tdot:	(<.> number | ={<0>})
 
 targ:	name|remote(tbody);
 
+/* PDP-7 doesn't take second arg (always zero?) */
 tpt:	{ <gp > 2 < " XXX, > 1 };
 
-/* no PDP-7 short lit (inline chars) */
-literal: remote(longlit) = { 1 };
+literal: remote(lit) = { 1 };
 
-longlit: ignore(none) (<>> = { <\> <>> } | null) litb <>>
+lit:	ignore(none) (<>> = { <\> <>> } | null) litb <>>
 	 = { <<> 2 1 <>; end> };
 
 litb:	smark string(litch) scopy <\>/done
@@ -197,17 +202,14 @@ assignment: lv assign expr = { 3 * 1 * 2 };
 
 rv:	prime
 rv1:	bundle	( infix prime = { 3 * 1 * 2 }\rv1
-		| rva = { 2 * 1 }
 		| () );
-rva:	<?> rv <:> rv fref fref 
-	= { <_t;alt;> * 2 * 4 * <salt;> * 1 * 2 <:> 3 * 1 <:> };
 
 prime:
 	lv suffix/done = { 2 * 1 }
 	| <&> lv = { <rm > 1 <;ro fi;addr> }
 	| <(> expr <)> 
 	| unary prime = { 1 * 2 }
-	| remote(number) = { <_l;> 1 };
+	| remote(number) = { <rm > 1 };
 
 lv:	( rname = { <_l;> 1 }
 	| <(> lv <)>
