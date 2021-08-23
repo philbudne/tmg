@@ -25,7 +25,8 @@ TMGB=	$(PDP7_UNIX)/src/other/pbtz.s
 
 ################
 
-all:	hhh.7 hello.7
+all:
+	@echo 'type "make mytfile.s" or "make mytfile.7"'
 
 ################
 # build local binary using C port of PDP-11 TMG
