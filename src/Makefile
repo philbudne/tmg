@@ -47,6 +47,7 @@ tmgl7b.t: tmgl7a.t $(echo 7patch/??-*.patch)
 		patch tmgl7b.t.tmp $$PATCH; \
 	done
 	mv tmgl7b.t.tmp tmgl7b.t
+	rm -f tmgl7b.t.tmp.orig
 
 ################
 
