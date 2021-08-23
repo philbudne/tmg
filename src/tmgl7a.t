@@ -250,10 +250,10 @@ unary:	( <-> = {<mi>}
 done:	;
 
 create:	[csym =+ 1]
-getcsym: octal(csym) = { <_> 1 };
+getcsym: octal(csym) = { <.> 1 };
 
 fref:	[fsym =+ 1]
-getfref: octal(fsym) = { <__> 1 };
+getfref: octal(fsym) = { <..> 1 };
 
 not:	params(1) $1/done fail;
 
