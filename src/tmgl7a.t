@@ -30,7 +30,7 @@
 /* - finishing the output with a newline */
 /* (c) 2020, Andrii Makukha, 2-clause BSD License. */
 
-begin:	ignore(blanks) [wordsz = &classes - &nclass]
+begin:	ignore(blanks)
 pr1:	comment\pr1
 	parse(first)\pr2
 	diag(error)
@@ -49,8 +49,7 @@ error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy
 
 line:
 	labels
-	( charcl <;>
-	| statement
+	( statement
 	| numbers
 	| trule <;> )
 	= { 2 * 1 * };
@@ -126,7 +125,6 @@ alias:	newtab(dtt,ndt);
 parg:	rname | remote(specparg);
 
 specparg: number
-	| charcl
 	| <<> longlit
 	| <*> = { <\n> }
 	| <(> ( <)> = { <x no;> }
@@ -249,46 +247,6 @@ unary:	( <-> = {<mi>}
 	| <~> = {<cm>}
 	);
 
-charcl:
-	( <!> ccla cclb | ccla )
-	octal(classmask);
-ccla:	(<<<>) [classmask = 1<<nclass++] [classmask?]/cherr
-ccl1:	cclc <<<>\ccl1;
-cclc:	ignore(none)
-
-ccl3:	<>>\ccl4 ccle\ccl3;
-ccl4:	(<>> | cclx fail) (not((<>>)) | ccle);
-ccle:	char(n) [*(wordsz*n+&classes) =| classmask];
-cclb:	zeron
-ccl5:	[*(wordsz*n+&classes) =^ classmask] testn\ccl5;
-cclx:	[nclass--] zeron
-ccl6:	[*(wordsz*n+&classes) =& ~classmask] testn\ccl6;
-cherr:	diag(( ={<too many char classes>} ));
-
-zeron:	[n=0];
-testn:	[++n<400?];
-
-classmask: 0;
-nclass:	0;
-classes:
-cl1:	0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl2:	0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl3:	0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl4:	0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl5:	0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl6:	0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl7:	0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl8:	0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-/* More classes added to avoid issues with UTF-8 or Unicode */
-cl9:	0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl10:   0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl11:   0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl12:   0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl13:   0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl14:   0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl15:   0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-cl16:   0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-
 done:	;
 
 create:	[csym =+ 1]
@@ -351,4 +309,3 @@ npa:	0;	/*number of parsing rule params*/
 ptt:	0;	/*table of params of translation*/
 npt:	0;	/*number of params of translation*/
 i:	0;
-wordsz: 0;      /* word size on the current architecture */
