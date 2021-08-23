@@ -10,9 +10,7 @@
  * the available PDP-7 primatives.
  *
  * Ops not used by this file and not present in PDP-7 support code
- * (eg post-increment) have been excised, but pre and post decrement and
- * pre-increment are (currently) used below (ie; when this compiled
- * and run on modern Un*x/Linux).
+ * are being reduced/removed.
  *
  * Some rough spots are being smoothed over temporarily
  * by running output through fix7.py
@@ -72,7 +70,7 @@ comment: </*>
 co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
 
 statement: [csym=0] oldtab(dtt) oldtab(pat)
-	( prc plst tlst <)> = (1){2 1 }
+	( prc plst <)> = (1){2 1 }
 	| = (1){} noelem )
 stt1:	bundle	( frag = (1){ 2(nil) * 1(q1) }\stt1
 		| <;>	( ifelem = { 1(xbit) }
@@ -85,9 +83,6 @@ plst:	list(pident)/null remote((octal(npa)))
 	= { <params;> 1 * };
 
 pident:	ident newtab(pat,npa);
-
-tlst:	<;>/null [i=0] list((name [i =+ 1])) remote((octal(i)))
-	= { <push;> 1 * 2 * };
 
 frag:	prule = (1){ 1(nil,q1) }
 	| labels noelem = (1){ 1 };
