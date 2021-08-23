@@ -96,9 +96,9 @@ frag:	prule = (1){ 1(nil,q1) }
 
 prule:	[sndt=ndt] disj
 	( <|> [ndt=sndt] fref
-		( ifeasy prule = (2){3(nil,nil)*<salt;>2*
+		( ifeasy prule = (2){3(nil,nil)*<rb >2*
 				 1(q2,q1)*2<:>}
-		| prule fref = (2){4({*<alt;>1},q1)*<goto;>3*
+		| prule fref = (2){4({*<ra >1},q1)*<goto;>3*
 				1<:>2(q2,q1)*3<:>} )
 		noelem
 	| () );
@@ -118,7 +118,7 @@ pprim:	( special
 			( <(> ignore(blanks) list(parg) <)>
 				= (1){$1 2 * 1}
 			| = (1){$1 1}  )))
-	( (</> = {<alt;>} | <\> = {<salt;>})
+	( (</> = {<ra >} | <\> = {<rb >})
 		rname = (1){3(nil)*$1 2 1}
 	| () );
 

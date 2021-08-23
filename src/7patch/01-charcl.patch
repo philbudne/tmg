@@ -1,91 +1,52 @@
---- tmgl7a.t	2021-08-23 01:47:16.733294738 -0400
-+++ tmgl7b.t	2021-08-23 01:47:23.657420021 -0400
-@@ -48,7 +48,7 @@
- first:	parse(( fref = { <st=0100> * <fi=0200> * <start: rc x > 1 *}))
- 	getfref line = { 2 <:> 1 };
- 
--error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy
-+error:	smark ignore(none) any(all) string(nosemi) scopy 
- 	( <;> = {<;>} | null )
- 	= { * <??? error: > 2 1 * };
- 
-@@ -69,7 +69,7 @@
- last:	= { };
- 
- comment: </*>
--co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
-+co1:	ignore(nostar) <*> ignore(none) </>/co1;
- 
- statement: [csym=0] oldtab(dtt) oldtab(pat)
- 	( prc plst tlst <)> = (1){2 1 }
-@@ -124,7 +124,7 @@
- 
- pdot:	<.>/done ignore(none) ident\alias
- 	([dtt?] | table(dtt) [ndt=0]) [ndt =+ 1];
--spdot:	<.> ignore(none) not(( any(letter) ))
-+spdot:	<.> ignore(none) not(( char(letter) ))
- alias:	newtab(dtt,ndt);
- 
- parg:	rname | remote(specparg);
-@@ -205,8 +205,7 @@
- 		| () );
- 
- prime:
--	lv suffix/done = { 2 * 1 }
--	| <&> lv = { <rm > 1 <;ro fi;addr> }
-+	<&> lv = { <rm > 1 <;ro fi;addr> }
- 	| <(> expr <)> 
- 	| unary prime = { 1 * 2 }
- 	| remote(number) = { <rm > 1 };
-@@ -235,10 +234,6 @@
- 		| = {<gt>} )
- 	);
- 
--suffix:	smark ignore(none)
--	( <--> = {<_daXXX>}
--	);
--
- unary:	( <-> = {<mi>}
- 	| <~> = {<cm>}
- 	);
-@@ -259,11 +254,11 @@
- remote:	params(1) create parse(rem1,$1);
- rem1:	params(1) getcsym $1 = { 2 <=.> * 1 * };
- 
--number: smark ignore(none) any(digit) string(digit) scopy;
-+number: smark ignore(none) char(digit) string(digit) scopy;
- 
- name:	ident scopy;
- 
--ident:	smark ignore(none) any(letter) string(alpha);
-+ident:	smark ignore(none) char(letter) string(alpha);
- 
- oldtab:	params(1) [$1?]/done discard($1) [$1=0];
- 
-@@ -281,16 +276,16 @@
- 
- nil:	{};
- 
--blanks:	<< 	
--	>>;
--digit:	<<0123456789>>;
--letter:	<<abcdefghijklmnopqrstuvwxyz>>
--	<<ABCDEFGHIJKLMNOPQRSTUVWXYZ>>;
--alpha:	<<0123456789>>
--	<<abcdefghijklmnopqrstuvwxyz>>
--	<<ABCDEFGHIJKLMNOPQRSTUVWXYZ>>;
--litch:	!<<\>>>;
--none:	<<>>;
-+/* character classes */
-+blanks: 000600; 000000; 400000; 000000; 000000; 000000; 000000; 000000;
-+digit:	000000; 000000; 000000; 777400; 000000; 000000; 000000; 000000;
-+letter:	000000; 000000; 000000; 000000; 377774; 777600; 377774; 777600;
-+alpha:	000000; 000000; 000000; 777400; 377774; 777600; 377774; 777600;
-+litch:	777777; 777777; 777777; 777767; 777777; 777777; 777777; 777777;
-+nostar:	777777; 777777; 777577; 777777; 777777; 777777; 777777; 777777;
-+none:	000000; 000000; 000000; 000000; 000000; 000000; 000000; 000000;
-+all:	777777; 777777; 777777; 777777; 777777; 777777; 777777; 777777;
-+nosemi:	777777; 777777; 777777; 777677; 777777; 777777; 777777; 777777;
- 
- csym:	0;
- fsym:	0;
+51c51
+< error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy
+---
+> error:	smark ignore(none) any(all) string(nosemi) scopy 
+72c72
+< co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
+---
+> co1:	ignore(nostar) <*> ignore(none) </>/co1;
+127c127
+< spdot:	<.> ignore(none) not(( any(letter) ))
+---
+> spdot:	<.> ignore(none) not(( char(letter) ))
+208,209c208
+< 	lv suffix/done = { 2 * 1 }
+< 	| <&> lv = { <rm > 1 <;ro fi;addr> }
+---
+> 	<&> lv = { <rm > 1 <;ro fi;addr> }
+238,241d236
+< suffix:	smark ignore(none)
+< 	( <--> = {<_daXXX>}
+< 	);
+< 
+262c257
+< number: smark ignore(none) any(digit) string(digit) scopy;
+---
+> number: smark ignore(none) char(digit) string(digit) scopy;
+266c261
+< ident:	smark ignore(none) any(letter) string(alpha);
+---
+> ident:	smark ignore(none) char(letter) string(alpha);
+284,293c279,288
+< blanks:	<< 	
+< 	>>;
+< digit:	<<0123456789>>;
+< letter:	<<abcdefghijklmnopqrstuvwxyz>>
+< 	<<ABCDEFGHIJKLMNOPQRSTUVWXYZ>>;
+< alpha:	<<0123456789>>
+< 	<<abcdefghijklmnopqrstuvwxyz>>
+< 	<<ABCDEFGHIJKLMNOPQRSTUVWXYZ>>;
+< litch:	!<<\>>>;
+< none:	<<>>;
+---
+> /* character classes */
+> blanks: 000600; 000000; 400000; 000000; 000000; 000000; 000000; 000000;
+> digit:	000000; 000000; 000000; 777400; 000000; 000000; 000000; 000000;
+> letter:	000000; 000000; 000000; 000000; 377774; 777600; 377774; 777600;
+> alpha:	000000; 000000; 000000; 777400; 377774; 777600; 377774; 777600;
+> litch:	777777; 777777; 777777; 777767; 777777; 777777; 777777; 777777;
+> nostar:	777777; 777777; 777577; 777777; 777777; 777777; 777777; 777777;
+> none:	000000; 000000; 000000; 000000; 000000; 000000; 000000; 000000;
+> all:	777777; 777777; 777777; 777777; 777777; 777777; 777777; 777777;
+> nosemi:	777777; 777777; 777777; 777677; 777777; 777777; 777777; 777777;
