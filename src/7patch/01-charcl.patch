@@ -1,6 +1,6 @@
---- 7save/tmgl7b.t.00	2021-08-22 15:00:03.278918422 -0400
-+++ tmgl7b.t	2021-08-22 16:54:17.292080076 -0400
-@@ -30,28 +30,26 @@
+--- 7save/tmgl7b.t.00	2021-08-22 19:52:06.430761392 -0400
++++ 7save/tmgl7b.t.01	2021-08-22 19:46:27.148767835 -0400
+@@ -30,7 +30,7 @@
  /* - finishing the output with a newline */
  /* (c) 2020, Andrii Makukha, 2-clause BSD License. */
  
@@ -9,18 +9,12 @@
  pr1:	comment\pr1
  	parse(first)\pr2
  	diag(error)
- pr2:	comment\pr2
- 	parse(line)\pr2
- 	diag(error)\pr2
--	putcharcl
- 	parse(last);
- 
- /* PLB: added start label */
+@@ -43,14 +43,13 @@
  first:	parse(( fref = { <start: rc x > 1 *}))
  	getfref line = { 2 <:> 1 };
  
 -error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy 
-+error:	smark ignore(none) char(all) string(nosemi) scopy 
++error:	smark ignore(none) any(all) string(nosemi) scopy 
  	( <;> = {<;>} | null )
  	= { * <??? error: > 2 1 * };
  
@@ -32,13 +26,8 @@
  	| numbers
  	| trule <;> )
  	= { 2 * 1 * };
-@@ -63,11 +61,10 @@
- label:	name <:> = { 1 <:> };
- 
- /* PDP-7 boilerplate: */
--/* multiply is temporary: use shift for char tables (just use octal??) */
--last:	= { <st=0100> * <fi=0200> * <MULTIPLY: jms halt> * <NOT: jms halt> * };
-+last:	= { <st=0100> * <fi=0200> * };
+@@ -65,7 +64,7 @@
+ last:	= { <st=0100> * <fi=0200> * };
  
  comment: </*>
 -co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
@@ -46,7 +35,7 @@
  
  statement: [csym=0] oldtab(dtt) oldtab(pat)
  	( prc plst tlst <)> = (1){2 1 }
-@@ -122,13 +119,12 @@
+@@ -120,13 +119,12 @@
  
  pdot:	<.>/done ignore(none) ident\alias
  	([dtt?] | table(dtt) [ndt=0]) [ndt++];
@@ -61,7 +50,7 @@
  	| <<> longlit
  	| <*> = { <\n> }
  	| <(> ( <)> = { <x no;> }
-@@ -256,51 +252,6 @@
+@@ -249,46 +247,6 @@
  	| <~> = {<cm>}
  	);
  
@@ -83,11 +72,6 @@
 -
 -zeron:	[n=0];
 -testn:	[++n<400?];
--
--putcharcl: zeron [classes=0] 
--	parse(( = { * <classtab:> * } ))
--ptc1:	[w = *(wordsz*n+&classes)] parse((octal(w) = {1*}))
--	bundle testn\ptc1;
 -
 -classmask: 0;
 -nclass:	0;
@@ -113,7 +97,7 @@
  done:	;
  
  create:	[csym++]
-@@ -317,11 +268,11 @@
+@@ -305,11 +263,11 @@
  remote:	params(1) create parse(rem1,$1);
  rem1:	params(1) getcsym $1 = { 2 <=.> * 1 * };
  
@@ -127,7 +111,7 @@
  
  oldtab:	params(1) [$1?]/done discard($1) [$1=0];
  
-@@ -339,16 +290,16 @@
+@@ -327,16 +285,16 @@
  
  nil:	{};
  
@@ -154,7 +138,7 @@
  
  csym:	0;
  fsym:	0;
-@@ -362,5 +313,3 @@
+@@ -350,5 +308,3 @@
  npa:	0;	/*number of parsing rule params*/
  ptt:	0;	/*table of params of translation*/
  npt:	0;	/*number of params of translation*/
