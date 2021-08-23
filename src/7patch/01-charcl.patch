@@ -1,5 +1,5 @@
---- tmgl7a.t	2021-08-23 19:20:13.872244717 -0400
-+++ tmgl7b.t	2021-08-23 19:21:47.229899652 -0400
+--- tmgl7a.t	2021-08-23 19:36:51.517940632 -0400
++++ tmgl7b.t	2021-08-23 19:36:58.978073041 -0400
 @@ -46,7 +46,7 @@
  first:	parse(( fref = { <st=0100> * <fi=0200> * <start: rc x > 1 *}))
  	getfref line = { 2 <:> 1 };
@@ -27,18 +27,7 @@
  alias:	newtab(dtt,ndt);
  
  parg:	rname | remote(specparg);
-@@ -230,10 +230,6 @@
- 		| = {<gt>} )
- 	);
- 
--suffix:	smark ignore(none)
--	( <--> = {<_daXXX>}
--	);
--
- unary:	( <-> = {<mi>}
- 	| <~> = {<cm>}
- 	);
-@@ -254,11 +250,11 @@
+@@ -254,11 +254,11 @@
  remote:	params(1) create parse(rem1,$1);
  rem1:	params(1) getcsym $1 = { 2 <=.> * 1 * };
  
@@ -52,7 +41,7 @@
  
  oldtab:	params(1) [$1?]/done discard($1) [$1=0];
  
-@@ -276,16 +272,16 @@
+@@ -276,16 +276,16 @@
  
  nil:	{};
  
