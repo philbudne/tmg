@@ -94,7 +94,7 @@ prule:	[sndt=ndt] disj
 		( ifeasy prule = (2){3(nil,nil)*<salt;>2*
 				 1(q2,q1)*2<:>}
 		| prule fref = (2){4({*<alt;>1},q1)*<goto;>3*
-				1<:>2(q2,q1)* 3<:>} )
+				1<:>2(q2,q1)*3<:>} )
 		noelem
 	| () );
 
