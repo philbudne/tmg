@@ -52,7 +52,11 @@ for line in sys.stdin.readlines():
                     out.append("%03o%03o %s>" % (o0, o1))
             s = s[2:]
         if len(s) == 1:
-            out.append("<%s 0777" % s)
+            o0 = ord(s[0])
+            if o0 > 0o40 and o0 < 0o177:
+                out.append("<%s 0777" % s)
+            else:
+                out.append("%03o777" % o0)
         else:
             out.append('end')
         return '; '.join(out)
