@@ -63,8 +63,15 @@ labels:	label labels/done = { 2 * 1 };
 
 label:	name <:> = { 1 <:> };
 
-/* PDP-7 boilerplate: */
-last:	= { };
+/* dummies, mostly halts */
+last:	= {	<" TEMP:> *
+		<fail=nuts> *
+		<" distinct halt addr for each:> *
+		<push:	jms halt> *
+		<tab11:	jms halt> *
+		<diag:	jms halt> *
+		<_f:	jms halt> *
+	  };
 
 comment: </*>
 co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
@@ -171,8 +178,8 @@ tdot:	(<.> number | ={<0>})
 
 targ:	name|remote(tbody);
 
-/* PDP-7 doesn't take second arg (always zero?) */
-tpt:	{ <gp > 2 < " XXX, > 1 };
+/* PDP-7 op doesn't take second arg (#1, always zero anyway?) */
+tpt:	{ <gp > 2 };
 
 literal: remote(lit) = { 1 };
 
