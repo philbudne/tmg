@@ -201,7 +201,7 @@ prime:
 	lv suffix/done = { 2 * 1 }
 	| <&> lv = { <rm > 1 <;ro fi;addr> }
 	| <(> expr <)> 
-	| unary prime = { 1 * 2 }
+	| unop prime = { 1 * 2 }
 	| number = { <rv > 1 };
 
 lv:	( rname = { <_l;> 1 }
@@ -232,7 +232,7 @@ suffix:	smark ignore(none)
 	( <--> = {<_daXXX>}
 	);
 
-unary:	( <-> = {<mi>}
+unop:	( <-> = {<mi>}
 	| <~> = {<cm>}
 	);
 
