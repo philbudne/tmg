@@ -204,7 +204,7 @@ prime:
 	| <&> lv = { <rm > 1 <;ro fi;addr> }
 	| <(> expr <)> 
 	| unary prime = { 1 * 2 }
-	| remote(number) = { <rm > 1 };
+	| number = { <rv > 1 };
 
 lv:	( rname = { <_l;> 1 }
 	| <(> lv <)>
