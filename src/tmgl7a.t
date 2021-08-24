@@ -74,7 +74,7 @@ statement: [csym=0]
 	| = (1){} noelem )
 stt1:	bundle	( frag = (1){ 2(nil) * 1(q1) }\stt1
 		| <;>	( ifelem = { 1(xbit) }
-			| ={ 1(nil) * <x no;> }
+			| ={ 1(nil) * xbit <no;> }
 		)	);
 
 prc:	smark ignore(none) <proc(>;
@@ -122,11 +122,11 @@ parg:	rname | remote(specparg);
 specparg: number
 	| <<> lit
 	| <*> = { <\n> }
-	| <(> ( <)> = { <x no;> }
+	| <(> ( <)> = { xbit <no;> }
 		| push(3,dtt,ndt,sndt) [dtt=0]
 			prule <)>
 			( ifelem = {1(nil,xbit) }
-			| = {1(nil,nil)*<x no;>}
+			| = {1(nil,nil)* xbit <no;>}
 		)	);
 
 iseasy:	[easy = 1];
@@ -154,7 +154,7 @@ tra:	list(tident) octal(npt);
 
 tident:	ident newtab(ptt,npt);
 
-tbody: <{>	( <}> = { xbit <no " empty body> }
+tbody: <{>	( <}> = { xbit <no> }
 		| trb);
 trb:	telem	( <}> = {  xbit 1 }
 		| trb = { 2 * 1 } );
