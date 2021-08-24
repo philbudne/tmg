@@ -26,22 +26,22 @@ TMGB=	$(PDP7_UNIX)/src/other/pbtz.s
 
 ################
 
-all:
-	@echo 'targets: tmgl7a, tmgl7b.t, mytfile.s, mytfile.7'
-	@echo '	 where mytfile.t is a TMGL source file in this directory'
+all:	tmgl7b.s hello.out
 
 # tmgl7a is a PDP-11 style source file, not a PDP-7 style source file!!
 tmgl7a.s tmgl7a.7 tmgl7a.7n:
-	@echo 'STOP: make sense'
-	@false
+	@echo 'STOP: make sense'; false
 
-################
+tmgl1 tmgl2: build.sh tmgl1.t tmgl2.t tmga.c tmgb.h libs.h tmgc.h
+	./build.sh
+
 # build local binary using C port of PDP-11 TMG
-
-tmgl7a:	tmgl7a.t tmgl1
+tmgl7a: tmg.sh tmgl1 tmgl2 tmgl7a.t
 	./tmg.sh tmgl7a.t tmgl7a
 
-################
+# build PDP-7 tmgl7b.s file using tmgl7a
+tmgl7b.s: tmgl7a tmgl7b.t fix7.py
+	./tmgl7a tmgl7b.t | python fix7.py > tmgl7b.s
 
 # apply changes as a series of patches,
 # in case any need to be undone.
@@ -54,9 +54,16 @@ tmgl7b.t: tmgl7a.t $(echo 7patch/??-*.patch)
 	mv tmgl7b.t.tmp tmgl7b.t
 	rm -f tmgl7b.t.tmp.orig
 
+hello.s: ../examples/hello_world.t tmgl7a
+	./tmgl7a ../examples/hello_world.t | python fix7.py > hello.s
+
+hello.out: hello.7
+	./run hello.7 | grep 'Hello, World' > hello.out.tmp
+	mv hello.out.tmp hello.out
+
 ################
 
 clean:
 	rm -rf build
-	rm -f core *.7 *.7n tmgl7a a.out tt[ab].s *~ \#*
-	rm -f hello_world.s hello_world.7 hello_world.7n
+	rm -f core *.7 *.7n tmgl7a a.out tmgl7b* *~ \#*
+	rm -f hello*
