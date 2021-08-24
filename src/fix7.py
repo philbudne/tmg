@@ -17,7 +17,23 @@ def pr(x):
         return False
     return True
 
+BUILTINS = {
+    "octal": "octal",
+    "char": "char",
+    "table": "table",
+    "getname": "getname",
+    "mark": "mark",
+    "string": "string",
+
+    # PDP-11 ops (porting aid, until tmgl7a is static)
+    "smark": "mark",
+    "ignore": "ign11",
+#   "table": "tab11",
+    "any": "char",
+}
+
 end_next = ''
+prev = ''
 for line in sys.stdin.readlines():
     if end_next:
         if not line.startswith('x '):
@@ -26,24 +42,26 @@ for line in sys.stdin.readlines():
 
     # PDP-11 uses bare address for both builtins and TMG code
     # (determines which by address range)
-    # need to have a rule that recognizes all builtins???
+    # need to have a TMG rule that recognizes all builtins???
 
-    line = line.replace("parse", "rf parsedo")
-    if 'x rf parsedo' in line:
+    ls = line.strip()
+    if ls == 'parse':
+        line = 'rf parsedo\n'
+    elif ls == 'x parse':
+        line = 'rf parsedo\n'
         end_next = 'x '
-        line = line.replace('x rf parsedo', 'rf parsedo')
-    line = line.replace("smark", "rf mark")
-    line = line.replace("ignore", "rf ign11")
-    line = line.replace("octal", "rf octal")
-    line = line.replace("any", "rf char")
-    line = line.replace("table", "rf tab11")
-
-    # split up string lits
-    # wondering if lit strings were dumped out by symoct (in octal)?!
-    # OR if PDP-7 TMGL only had two-char lits?
-    # OR whether a looping rule with char(nogt) char(nogt) would work
-    #   to peel of character pairs?
-    if line.startswith('<') and line.endswith('>\n'):
+    elif ls in BUILTINS:
+        line = 'rf %s\n' % BUILTINS[ls]
+    elif ls.startswith('x '):
+        x, op = ls.split(' ', 1)
+        if op in BUILTINS:
+            line = 'x rf %s\n' % BUILTINS[op]
+    elif line.startswith('<') and line.endswith('>\n'):
+        # split up string lits
+        # wondering if lit strings were dumped out by symoct (in octal)?!
+        # OR if PDP-7 TMGL only had two-char lits?
+        # OR whether a looping rule with char(nogt) char(nogt) would work
+        #   to peel of character pairs? lots of pain/exceptions to handle!
         s = line[1:-2]
         out = []
         while len(s) > 1:
@@ -71,4 +89,11 @@ for line in sys.stdin.readlines():
         else:
             out.append('end')
         line = '; '.join(out) + '\n'
+    elif ls and ':' not in line and '=' not in line and ' ' not in line:
+        if not line[0].isdigit():
+            pass
+# XXX must exclude opcodes!!!
+#            if 'rf char' not in prev and 'rf string' not in prev:
+#                line = 'rc ' + line
+    prev = line
     sys.stdout.write(line)
