@@ -27,6 +27,7 @@ for line in sys.stdin.readlines():
     line = line.replace("smark", "rf mark")
     line = line.replace("ignore", "rf ign11")
     line = line.replace("octal", "rf octal")
+    line = line.replace("any", "rf char")
 
     # split up string lits
     # wondering if lit strings were dumped out by symoct (in octal)?!
