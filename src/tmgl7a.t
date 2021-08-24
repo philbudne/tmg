@@ -93,7 +93,7 @@ prule:	[sndt=ndt] disj
 		noelem
 	| () );
 
-disj:	pelem pdot
+disj:	pelem
 	( disj = (2){2(q2,nil) * 1(nil,q1)} ifelem/done ishard
 	| () );
 
@@ -112,10 +112,7 @@ pprim:	( special
 		rname = (1){3(nil)*$1 2 1}
 	| () );
 
-pdot:	<.>/done ignore(none) ident\alias
-	fail;
-spdot:	<.> ignore(none) not(( any(letter) ))
-alias:	fail;
+spdot:	fail;
 
 parg:	rname | remote(specparg);
 
