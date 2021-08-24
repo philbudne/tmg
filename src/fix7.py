@@ -42,6 +42,8 @@ for line in sys.stdin.readlines():
             s = s[2:]
         if len(s) == 1:
             out.append("<%s 0777" % s)
+        else:
+            out.append('end')
         return '; '.join(out)
     line = STR_RE.sub(fixstr, line)
     sys.stdout.write(line)

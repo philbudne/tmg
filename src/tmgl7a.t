@@ -186,7 +186,7 @@ tpt:	{ <gp > 2 < " XXX, > 1 };
 literal: remote(lit) = { 1 };
 
 lit:	ignore(none) (<>> = { <\> <>> } | null) litb <>>
-	 = { <<> 2 1 <>; end> };
+	 = { <<> 2 1 <>> };
 
 litb:	smark string(litch) scopy <\>/done
 	litb = { 2 <\\> 1 };
