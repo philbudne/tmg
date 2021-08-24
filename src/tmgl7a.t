@@ -208,7 +208,7 @@ prime:
 
 lv:	( rname = { <_l;> 1 }
 	| <(> lv <)>
-	| <*> prime = { 1 * <_rv> } )
+	| <*> prime = { 1 * <indir> } )
 lv1:	<[>/done bundle expr <]> = { 2 * 1 * <_f> }\lv1;
 
 assign:	<=> ignore(none) ( infix = { 1 * <_u> }
