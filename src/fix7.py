@@ -9,6 +9,14 @@ import re
 
 STR_RE = re.compile("<[^>]*>")
 
+UNPRINT = [ord(x) for x in '\t <\\']
+def pr(x):
+    if x in UNPRINT:
+        return False
+    if x <= 0o40 or x > 0o176:
+        return False
+    return True
+
 end_next = ''
 for line in sys.stdin.readlines():
     if end_next:
@@ -35,31 +43,32 @@ for line in sys.stdin.readlines():
     # OR if PDP-7 TMGL only had two-char lits?
     # OR whether a looping rule with char(nogt) char(nogt) would work
     #   to peel of character pairs?
-    def fixstr(m):
-        s = m.string[m.start()+1:m.end()-1]
+    if line.startswith('<') and line.endswith('>\n'):
+        s = line[1:-2]
         out = []
         while len(s) > 1:
-            o0 = ord(s[0])
-            o1 = ord(s[1])
-            if o0 > 0o40 and o0 < 0o177:
-                if o1 > 0o40 and o1 < 0o177:
-                    out.append("<%s>" % s[0:2])
+            s0 = s[0]
+            s1 = s[1]
+            o0 = ord(s0)
+            o1 = ord(s1)
+            if pr(o0):
+                if pr(o1):
+                    out.append("<%s%s>" % (s0, s1))
                 else:
-                    out.append("<%s %03o" % (s[0], o1))
+                    out.append("<%s %03o" % (s0, o1))
+            elif pr(o1):
+                out.append("%03o000 %s>" % (o0, s1))
             else:
-                if o1 > 0o40 and o1 < 0o177:
-                    out.append("%03o000 %s>" % (o0, s[1]))
-                else:
-                    out.append("%03o%03o %s>" % (o0, o1))
+                out.append("%03o%03o" % (o0, o1))
             s = s[2:]
         if len(s) == 1:
-            o0 = ord(s[0])
-            if o0 > 0o40 and o0 < 0o177:
-                out.append("<%s 0777" % s)
+            s0 = s[0]
+            o0 = ord(s0)
+            if pr(o0):
+                out.append("<%s 0777" % s0)
             else:
                 out.append("%03o777" % o0)
         else:
             out.append('end')
-        return '; '.join(out)
-    line = STR_RE.sub(fixstr, line)
+        line = '; '.join(out) + '\n'
     sys.stdout.write(line)
