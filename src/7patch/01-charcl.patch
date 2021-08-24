@@ -18,29 +18,6 @@
  
  statement: [csym=0] oldtab(dtt) oldtab(pat)
  	( prc plst <)> = (1){2 1 }
-@@ -119,7 +119,7 @@
- 
- pdot:	<.>/done ignore(none) ident\alias
- 	([dtt?] | table(dtt) [ndt=0]) [ndt =+ 1];
--spdot:	<.> ignore(none) not(( any(letter) ))
-+spdot:	<.> ignore(none) not(( char(letter) ))
- alias:	newtab(dtt,ndt);
- 
- parg:	rname | remote(specparg);
-@@ -254,11 +254,11 @@
- remote:	params(1) create parse(rem1,$1);
- rem1:	params(1) getcsym $1 = { 2 <=.> * 1 * };
- 
--number: smark ignore(none) any(digit) string(digit) scopy;
-+number: smark ignore(none) char(digit) string(digit) scopy;
- 
- name:	ident scopy;
- 
--ident:	smark ignore(none) any(letter) string(alpha);
-+ident:	smark ignore(none) char(letter) string(alpha);
- 
- oldtab:	params(1) [$1?]/done discard($1) [$1=0];
- 
 @@ -276,16 +276,16 @@
  
  nil:	{};
