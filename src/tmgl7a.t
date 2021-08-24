@@ -263,9 +263,9 @@ ident:	smark ignore(none) any(letter) string(alpha);
 oldtab:	params(1) [$1?]/done discard($1) [$1=0];
 
 newtab:	params(2) ([$2?] | table($2) [$1=0])
-	enter($2,i) [$2[i] = $1] [$1 =+ 1];
+	enter($2,index) [$2[index] = $1] [$1 =+ 1];
 
-tabval:	params(2) [$2?] find($2,i) [i=$1-$2[i]] octal(i);
+tabval:	params(2) [$2?] find($2,index) [index=$1-$2[index]] octal(index);
 
 null:	= nil;
 
@@ -299,4 +299,4 @@ pat:	0;	/*parsing rule parameter table*/
 npa:	0;	/*number of parsing rule params*/
 ptt:	0;	/*table of params of translation*/
 npt:	0;	/*number of params of translation*/
-i:	0;
+index:	0;
