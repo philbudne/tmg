@@ -154,7 +154,7 @@ tra:	list(tident) octal(npt);
 
 tident:	ident newtab(ptt,npt);
 
-tbody: <{>	( <}> = { <rf x generate> }
+tbody: <{>	( <}> = { xbit <no " empty body> }
 		| trb);
 trb:	telem	( <}> = {  xbit 1 }
 		| trb = { 2 * 1 } );
