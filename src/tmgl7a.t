@@ -150,13 +150,10 @@ special: <=> (rname | remote(trule))
 
 rname:	( name tabval(pat,npa)/done
 	| <$> number )
-	= { <rs > 1 }; /* PLB: guessing! */
+	= { <rs > 1 }; /* PLB: a guess */
 
 trule:	( tbody
-	| <(> (number|tra) <)> tbody = {<gpar;> 2 * 1 } );
-tra:	list(tident) octal(npt);
-
-tident:	ident newtab(ptt,npt);
+	| <(> number <)> tbody = {<gpar;> 2 * 1 } );
 
 tbody: <{>	( <}> = { xbit <no> }
 		| trb);
@@ -169,8 +166,8 @@ telem:	<<> literal = { <gx > 1 }
 	| number tdot = tpt
 	| name te1\done te2\done;
 
-te1:	tabval(dtt,ndt) tdot = tpt;
-te2:	tabval(ptt,npt) = {<gq >1};
+te1:	fail;
+te2:	fail;
 
 tdot:	(<.> number | ={<0>})
 	( <(> list(targ) <)> | null)
@@ -178,7 +175,7 @@ tdot:	(<.> number | ={<0>})
 
 targ:	name|remote(tbody);
 
-/* PDP-7 op doesn't take second arg (#1, always zero anyway?) */
+/* PDP-7 op doesn't take second arg */
 tpt:	{ <gp > 2 };
 
 literal: remote(lit) = { 1 };
@@ -206,7 +203,7 @@ prime:
 
 lv:	( rname = { <_l;> 1 }
 	| <(> lv <)>
-	| <*> prime = { 1 * <indir> } )
+	| <*> prime = { 1 <; indir> } )
 lv1:	<[>/done bundle expr <]> = { 2 * 1 * <_f> }\lv1;
 
 assign:	<=> ignore(none) ( infix = { 1 * <_u> }
