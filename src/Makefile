@@ -54,7 +54,7 @@ tmgl7b.t: tmgl7a.t $(echo 7patch/??-*.patch)
 	mv tmgl7b.t.tmp tmgl7b.t
 	rm -f tmgl7b.t.tmp.orig
 
-hello.s: ../examples/hello_world.t tmgl7a
+hello.s: ../examples/hello_world.t tmgl7a fix7.py
 	./tmgl7a ../examples/hello_world.t | python fix7.py > hello.s
 
 hello.out: hello.7
