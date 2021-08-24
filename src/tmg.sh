@@ -49,7 +49,7 @@ echo "Build location: $build_dir/"
 # Compilation routine
 compile () {
     align="-falign-functions=16"
-    opt="-O1"
+    opt="-g"
     while true; do
         cc -std=c99 "$align" "$opt" tmga.c -o $1
         if [ $? -eq 0 ]; then
