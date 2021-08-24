@@ -38,7 +38,18 @@ for line in sys.stdin.readlines():
         s = m.string[m.start()+1:m.end()-1]
         out = []
         while len(s) > 1:
-            out.append("<%s>" % s [0:2])
+            o0 = ord(s[0])
+            o1 = ord(s[1])
+            if o0 > 0o40 and o0 < 0o177:
+                if o1 > 0o40 and o1 < 0o177:
+                    out.append("<%s>" % s[0:2])
+                else:
+                    out.append("<%s %03o" % (s[0], o1))
+            else:
+                if o1 > 0o40 and o1 < 0o177:
+                    out.append("%03o000 %s>" % (o0, s[1]))
+                else:
+                    out.append("%03o%03o %s>" % (o0, o1))
             s = s[2:]
         if len(s) == 1:
             out.append("<%s 0777" % s)
