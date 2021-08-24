@@ -69,8 +69,8 @@ last:	= { };
 comment: </*>
 co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
 
-statement: [csym=0] oldtab(dtt) oldtab(pat)
-	( prc plst <)> = (1){2 1 }
+statement: [csym=0]
+	( prc <)> = (1){2 1 }
 	| = (1){} noelem )
 stt1:	bundle	( frag = (1){ 2(nil) * 1(q1) }\stt1
 		| <;>	( ifelem = { 1(xbit) }
@@ -78,11 +78,6 @@ stt1:	bundle	( frag = (1){ 2(nil) * 1(q1) }\stt1
 		)	);
 
 prc:	smark ignore(none) <proc(>;
-
-plst:	list(pident)/null remote((octal(npa)))
-	= { <params;> 1 * };
-
-pident:	ident newtab(pat,npa);
 
 frag:	prule = (1){ 1(nil,q1) }
 	| labels noelem = (1){ 1 };
@@ -118,9 +113,9 @@ pprim:	( special
 	| () );
 
 pdot:	<.>/done ignore(none) ident\alias
-	([dtt?] | table(dtt) [ndt=0]) [ndt =+ 1];
+	fail;
 spdot:	<.> ignore(none) not(( any(letter) ))
-alias:	newtab(dtt,ndt);
+alias:	fail;
 
 parg:	rname | remote(specparg);
 
@@ -129,7 +124,7 @@ specparg: number
 	| <*> = { <\n> }
 	| <(> ( <)> = { <x no;> }
 		| push(3,dtt,ndt,sndt) [dtt=0]
-			prule <)> oldtab(dtt)
+			prule <)>
 			( ifelem = {1(nil,xbit) }
 			| = {1(nil,nil)*<x no;>}
 		)	);
@@ -153,8 +148,7 @@ rname:	( name tabval(pat,npa)/done
 	| <$> number )
 	= { <rs > 1 }; /* PLB: guessing! */
 
-trule:	oldtab(ptt)
-	( tbody
+trule:	( tbody
 	| <(> (number|tra) <)> tbody = {<gpar;> 2 * 1 } );
 tra:	list(tident) octal(npt);
 
@@ -260,12 +254,9 @@ name:	ident scopy;
 
 ident:	smark ignore(none) any(letter) string(alpha);
 
-oldtab:	params(1) [$1?]/done discard($1) [$1=0];
+newtab:	params(2) fail;
 
-newtab:	params(2) ([$2?] | table($2) [$1=0])
-	enter($2,index) [$2[index] = $1] [$1 =+ 1];
-
-tabval:	params(2) [$2?] find($2,index) [index=$1-$2[index]] octal(index);
+tabval:	params(2) fail;
 
 null:	= nil;
 
