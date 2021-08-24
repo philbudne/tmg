@@ -1,47 +1,30 @@
---- tmgl7a.t	2021-08-23 19:36:51.517940632 -0400
-+++ tmgl7b.t	2021-08-23 19:36:58.978073041 -0400
-@@ -46,7 +46,7 @@
- first:	parse(( fref = { <st=0100> * <fi=0200> * <start: rc x > 1 *}))
- 	getfref line = { 2 <:> 1 };
- 
--error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy
-+error:	smark ignore(none) any(all) string(nosemi) scopy 
- 	( <;> = {<;>} | null )
- 	= { * <??? error: > 2 1 * };
- 
-@@ -67,7 +67,7 @@
- last:	= { };
- 
- comment: </*>
--co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
-+co1:	ignore(nostar) <*> ignore(none) </>/co1;
- 
- statement: [csym=0] oldtab(dtt) oldtab(pat)
- 	( prc plst <)> = (1){2 1 }
-@@ -276,16 +276,16 @@
- 
- nil:	{};
- 
--blanks:	<< 	
--	>>;
--digit:	<<0123456789>>;
--letter:	<<abcdefghijklmnopqrstuvwxyz>>
--	<<ABCDEFGHIJKLMNOPQRSTUVWXYZ>>;
--alpha:	<<0123456789>>
--	<<abcdefghijklmnopqrstuvwxyz>>
--	<<ABCDEFGHIJKLMNOPQRSTUVWXYZ>>;
--litch:	!<<\>>>;
--none:	<<>>;
-+/* character classes */
-+blanks: 000600; 000000; 400000; 000000; 000000; 000000; 000000; 000000;
-+digit:	000000; 000000; 000000; 777400; 000000; 000000; 000000; 000000;
-+letter:	000000; 000000; 000000; 000000; 377774; 777600; 377774; 777600;
-+alpha:	000000; 000000; 000000; 777400; 377774; 777600; 377774; 777600;
-+litch:	777777; 777777; 777777; 777767; 777777; 777777; 777777; 777777;
-+nostar:	777777; 777777; 777577; 777777; 777777; 777777; 777777; 777777;
-+none:	000000; 000000; 000000; 000000; 000000; 000000; 000000; 000000;
-+all:	777777; 777777; 777777; 777777; 777777; 777777; 777777; 777777;
-+nosemi:	777777; 777777; 777777; 777677; 777777; 777777; 777777; 777777;
- 
- csym:	0;
- fsym:	0;
+49c49
+< error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy
+---
+> error:	smark ignore(none) any(all) string(nosemi) scopy 
+77c77
+< co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
+---
+> co1:	ignore(nostar) <*> ignore(none) </>/co1;
+274,283c274,283
+< blanks:	<< 	
+< 	>>;
+< digit:	<<0123456789>>;
+< letter:	<<abcdefghijklmnopqrstuvwxyz>>
+< 	<<ABCDEFGHIJKLMNOPQRSTUVWXYZ>>;
+< alpha:	<<0123456789>>
+< 	<<abcdefghijklmnopqrstuvwxyz>>
+< 	<<ABCDEFGHIJKLMNOPQRSTUVWXYZ>>;
+< litch:	!<<\>>>;
+< none:	<<>>;
+---
+> /* character classes */
+> blanks: 000600; 000000; 400000; 000000; 000000; 000000; 000000; 000000;
+> digit:	000000; 000000; 000000; 777400; 000000; 000000; 000000; 000000;
+> letter:	000000; 000000; 000000; 000000; 377774; 777600; 377774; 777600;
+> alpha:	000000; 000000; 000000; 777400; 377774; 777600; 377774; 777600;
+> litch:	777777; 777777; 777777; 777767; 777777; 777777; 777777; 777777;
+> nostar:	777777; 777777; 777577; 777777; 777777; 777777; 777777; 777777;
+> none:	000000; 000000; 000000; 000000; 000000; 000000; 000000; 000000;
+> all:	777777; 777777; 777777; 777777; 777777; 777777; 777777; 777777;
+> nosemi:	777777; 777777; 777777; 777677; 777777; 777777; 777777; 777777;
