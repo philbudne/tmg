@@ -186,14 +186,21 @@ lit:	ignore(none) (<>> = { <\> <>> } | null) litb <>>
 litb:	smark string(litch) scopy <\>/done
 	litb = { 2 <\\> 1 };
 
-expr:	assignment | rv ;
+expr:	aopassign | assignment | rv ;
 
-assignment: lv assign expr = { 3 * 1 * 2 };
+/* PLB: brute force VAR =OP CONST */
+aop:	<=> ignore(none) infix = { 1 };
+aopassign: rname aop number = { <rm > 3 <; rv > 1 <; > 2 < fi st> };
+
+/* PLB WRONG: will store wrong place if expr loads a variable?! */
+assignment:
+	lv <=> expr = { 1 * 2 <; ro fi st> };
 
 rv:	prime
 rv1:	bundle	( infix prime = { 3 * 1 * 2 }\rv1
 		| () );
 
+/* PLB WRONG: "ro fi" will fail if value of variable was zero!! */
 prime:
 	lv suffix/done = { 2 * 1 }
 	| <&> lv = { <rm > 1 <;ro fi;addr> }
@@ -201,12 +208,13 @@ prime:
 	| unop prime = { 1 * 2 }
 	| number = { <rv > 1 };
 
-lv:	( rname = { <_l;> 1 }
+/* PLB: pop value here, after rm? */
+lv:	( rname = { <rm > 1 }
 	| <(> lv <)>
 	| <*> prime = { 1 <; indir> } )
 lv1:	<[>/done bundle expr <]> = { 2 * 1 * <_f> }\lv1;
 
-assign:	<=> ignore(none) ( infix = { 1 * <_u> }
+assign:	<=> ignore(none) ( infix = { 1 }
 			| = { <_st> } );
 
 infix:	smark ignore(none)
