@@ -205,7 +205,7 @@ rv1:	bundle	( infix prime = { 3 * 1 * 2 }\rv1
  */
 prime:
 	lv suffix/done = { 2 * 1 }
-	| <&> lv = { <rv 0; rm > 1 <; as; addr> }
+	| <&> lv = { <rm > 1 <; addr> }
 	| <(> expr <)> 
 	| unop prime = { 1 * 2 }
 	| number = { <rv > 1 };
