@@ -76,7 +76,7 @@ last:	= {	<" TEMP:> *
 comment: </*>
 co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
 
-statement: [csym=0]
+statement: [csym=0] = {} noelem
 stt1:	bundle	( frag = (1){ 2(nil) * 1(q1) }\stt1
 		| <;>	( ifelem = { 1(xbit) }
 			| ={ 1(nil) * xbit <no;> }
