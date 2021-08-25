@@ -77,14 +77,10 @@ comment: </*>
 co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
 
 statement: [csym=0]
-	( prc <)> = (1){2 1 }
-	| = (1){} noelem )
 stt1:	bundle	( frag = (1){ 2(nil) * 1(q1) }\stt1
 		| <;>	( ifelem = { 1(xbit) }
 			| ={ 1(nil) * xbit <no;> }
 		)	);
-
-prc:	smark ignore(none) <proc(>;
 
 frag:	prule = (1){ 1(nil,q1) }
 	| labels noelem = (1){ 1 };
