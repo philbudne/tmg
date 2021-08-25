@@ -3,11 +3,14 @@ PDP7_CMDSRC=$(PDP7_UNIX)/src/cmd
 
 AS7=$(PDP7_UNIX)/tools/as7
 
+# core code assembled before tmgl generated code
 TMGA=	$(PDP7_CMDSRC)/t1.s $(PDP7_CMDSRC)/t2.s \
 	$(PDP7_CMDSRC)/t3.s $(PDP7_CMDSRC)/t4.s \
-	$(PDP7_CMDSRC)/t5.s $(PDP7_CMDSRC)/t6.s \
-	$(PDP7_CMDSRC)/t7.s $(PDP7_CMDSRC)/t8.s
-TMGB=	$(PDP7_UNIX)/src/other/pbtz.s
+	$(PDP7_CMDSRC)/t5.s $(PDP7_CMDSRC)/t6.s
+
+# storage/defns assembled after tmgl generated code
+TMGB=	$(PDP7_CMDSRC)/t7.s $(PDP7_CMDSRC)/t8.s \
+	$(PDP7_UNIX)/src/other/pbtz.s
 
 # implicit rules for creating thing.7 (runnable under a7out)
 # from thing.t using "make thing.7"
@@ -28,14 +31,17 @@ TMGB=	$(PDP7_UNIX)/src/other/pbtz.s
 
 all:	tmgl7b.s hello.out
 
-# tmgl7a is a PDP-11 style source file, not a PDP-7 style source file!!
+# tmgl7a.t is a PDP-11 style source file, not a PDP-7 style source file
+# used to generate a native binary, so no .s or PDP-7 a.out files!!
 tmgl7a.s tmgl7a.7 tmgl7a.7n:
 	@echo 'STOP: make sense'; false
 
+# native (C) tmgl, used to generate tmgl7a
 tmgl1 tmgl2: build.sh tmgl1.t tmgl2.t tmga.c tmgb.h libs.h tmgc.h
 	./build.sh
 
-# build local binary using C port of PDP-11 TMG
+# build local binary (using C port of PDP-11 TMG)
+# that outputs PDP-7 code
 tmgl7a: tmg.sh tmgl1 tmgl2 tmgl7a.t
 	./tmg.sh tmgl7a.t tmgl7a
 
@@ -43,7 +49,11 @@ tmgl7a: tmg.sh tmgl1 tmgl2 tmgl7a.t
 tmgl7b.s: tmgl7a tmgl7b.t fix7.py
 	./tmgl7a tmgl7b.t | python fix7.py > tmgl7b.s
 
-# apply changes as a series of patches,
+# make PDP-7 "binary" runnable under a7out
+tmgl7b.7: tmgl7b.s
+
+# tmgl7b.t is generated from tmgl7a.t by
+# by applying changes as a series of patches,
 # in case any need to be undone.
 tmgl7b.t: tmgl7a.t $(echo 7patch/??-*.patch)
 	-mv -f tmgl7b.t save/tmgl7b.t.`date '+%Y%m%d%H%M%S'`
@@ -54,6 +64,7 @@ tmgl7b.t: tmgl7a.t $(echo 7patch/??-*.patch)
 	mv tmgl7b.t.tmp tmgl7b.t
 	rm -f tmgl7b.t.tmp.orig
 
+# simplest test (the only one running at this point):
 hello.s: ../examples/hello_world.t tmgl7a fix7.py
 	./tmgl7a ../examples/hello_world.t | python fix7.py > hello.s
 
@@ -65,5 +76,5 @@ hello.out: hello.7
 
 clean:
 	rm -rf build
-	rm -f core *.7 *.7n tmgl7a a.out tmgl7b* *~ \#*
-	rm -f hello*
+	rm -f *.tmp *.7 *.7n tmgl7a tmgl7b* *~ \#*
+	rm -f hello* a.out n.out core
