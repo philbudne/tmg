@@ -184,22 +184,28 @@ litb:	smark string(litch) scopy <\>/done
 
 expr:	aopassign | assignment | rv ;
 
-/* PLB: brute force VAR =OP CONST */
+/* PLB: brute force simple VAR =OP CONST
+ * NOTE: confine spacial awareness to aop rule.
+ */
 aop:	<=> ignore(none) infix = { 1 };
 aopassign: rname aop number = { <rm > 3 <; rv > 1 <; > 2 < fi st> };
 
-/* PLB WRONG: will store wrong place if expr loads a variable?! */
+/* PLB: fetch dest location (sets holdlv)
+ * discard value, and store back to *holdlv?
+ */
 assignment:
-	lv <=> expr = { 1 * 2 <; ro fi st> };
+	lv <=> expr = { 2 * <rm > 1<; as st> };
 
 rv:	prime
 rv1:	bundle	( infix prime = { 3 * 1 * 2 }\rv1
 		| () );
 
-/* PLB WRONG: "ro fi" will fail if value of variable was zero!! */
+/* PLB NOTE: as discards TOS, but requires two entries!!
+ * addr is a unary operator that ignores/replaces TOS?!
+ */
 prime:
 	lv suffix/done = { 2 * 1 }
-	| <&> lv = { <rm > 1 <;ro fi;addr> }
+	| <&> lv = { <rv 0; rm > 1 <; as; addr> }
 	| <(> expr <)> 
 	| unop prime = { 1 * 2 }
 	| number = { <rv > 1 };
@@ -213,6 +219,7 @@ lv1:	<[>/done bundle expr <]> = { 2 * 1 * <_f> }\lv1;
 assign:	<=> ignore(none) ( infix = { 1 }
 			| = { <_st> } );
 
+/* PLB: make use of mx/mn (max/min instructions?) */
 infix:	smark ignore(none)
 	( <+> = {<ad>}
 	| <-> = {<sb>}
@@ -227,6 +234,8 @@ infix:	smark ignore(none)
 	| <<> = {<lt>}
 	| <>>	(  <>> = {<sr>}
 		| = {<gt>} )
+	| <MAX> = {<mx>}
+	| <MIN> = {<mn>}
 	);
 
 suffix:	smark ignore(none)
