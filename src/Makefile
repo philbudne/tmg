@@ -3,6 +3,8 @@ PDP7_CMDSRC=$(PDP7_UNIX)/src/cmd
 PDP7_TOOLS=$(PDP7_UNIX)/tools
 AS7=$(PDP7_TOOLS)/as7
 
+SRCDIR=.
+
 # core code assembled before tmgl generated code
 TMGA=	$(PDP7_CMDSRC)/t1.s $(PDP7_CMDSRC)/t2.s \
 	$(PDP7_CMDSRC)/t3.s $(PDP7_CMDSRC)/t4.s \
@@ -25,11 +27,15 @@ TMGB=	$(PDP7_CMDSRC)/t7.s $(PDP7_CMDSRC)/t8.s \
 
 # create PDP-7ish output file:
 .t.s:
-	./tmgl7a $< | python fix7.py > $@
+	$(SRCDIR)/tmgl7a $< | python $(SRCDIR)/fix7.py > $@
 
 ################
 
-all:	tmgl7b.s hello.out
+all:	tmgl7b.s test.ok
+
+test.ok:
+	./run_tests.sh
+	date > test.ok
 
 # tmgl7a.t is a PDP-11 style source file, not a PDP-7 style source file
 # used to generate a native binary, so no .s or PDP-7 a.out files!!
@@ -64,17 +70,10 @@ tmgl7b.t: tmgl7a.t $(echo 7patch/??-*.patch)
 	mv tmgl7b.t.tmp tmgl7b.t
 	rm -f tmgl7b.t.tmp.orig
 
-# simplest test (the only one running at this point):
-hello.s: ../examples/hello_world.t tmgl7a fix7.py
-	./tmgl7a ../examples/hello_world.t | python fix7.py > hello.s
-
-hello.out: hello.7
-	env PDP7_TOOLS=$(PDP7_TOOLS) ./run hello.7 | grep 'Hello, World' > hello.out.tmp
-	mv hello.out.tmp hello.out
-
 ################
 
 clean:
 	rm -rf build
 	rm -f *.tmp *.7 *.7n tmgl7a tmgl7b* *~ \#*
-	rm -f hello* a.out n.out core
+	rm -f a.out n.out core test.ok
+	rm -f test/*/*.[7s]* test/*/*.log* test/*/core

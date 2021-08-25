@@ -1,0 +1,4 @@
+make[1]: Entering directory '/home/phil/PDP7/tmg/src/7test/00_hello'
+make[1]: Nothing to be done for 'test.7'.
+make[1]: Leaving directory '/home/phil/PDP7/tmg/src/7test/00_hello'
+Hello, World!
