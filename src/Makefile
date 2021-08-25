@@ -1,7 +1,7 @@
-PDP7_UNIX=../../pdp7-unix
+PDP7_UNIX=/home/phil/PDP7/pdp7-unix
 PDP7_CMDSRC=$(PDP7_UNIX)/src/cmd
-
-AS7=$(PDP7_UNIX)/tools/as7
+PDP7_TOOLS=$(PDP7_UNIX)/tools
+AS7=$(PDP7_TOOLS)/as7
 
 # core code assembled before tmgl generated code
 TMGA=	$(PDP7_CMDSRC)/t1.s $(PDP7_CMDSRC)/t2.s \
@@ -69,7 +69,7 @@ hello.s: ../examples/hello_world.t tmgl7a fix7.py
 	./tmgl7a ../examples/hello_world.t | python fix7.py > hello.s
 
 hello.out: hello.7
-	./run hello.7 | grep 'Hello, World' > hello.out.tmp
+	env PDP7_TOOLS=$(PDP7_TOOLS) ./run hello.7 | grep 'Hello, World' > hello.out.tmp
 	mv hello.out.tmp hello.out
 
 ################
