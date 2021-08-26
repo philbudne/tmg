@@ -191,13 +191,15 @@ expr:	aopassign | assignment | rv ;
  * NOTE: confines spacial awareness to aop rule.
  */
 aop:	<=> ignore(none) infix = { 1 };
-aopassign: rname aop number = { <rm > 3 <; rv > 1 <; > 2 < fi st> };
+
+/* PLB: add "fi" once .pop gone?? */
+aopassign: rname aop number = { <rm > 3 <; rv > 1 <; > 2 < st> };
 
 /* PLB: fetch dest location (sets holdlv)
  * discard value, and store back to *holdlv?
  */
 assignment:
-	lv <=> expr = { 2 * <rm > 1<; as st> };
+	lv <=> expr = { 1 * 2 <; as st> };
 
 rv:	prime
 rv1:	bundle	( infix prime = { 3 * 1 * 2 }\rv1
@@ -208,7 +210,7 @@ rv1:	bundle	( infix prime = { 3 * 1 * 2 }\rv1
  */
 prime:
 	lv suffix/done = { 2 * 1 }
-	| <&> lv = { <rm > 1 <; addr> }
+	| <&> rname = { <rm > 1 <; addr> }
 	| <(> expr <)> 
 	| unop prime = { 1 * 2 }
 	| number = { <rv > 1 };
