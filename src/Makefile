@@ -34,7 +34,7 @@ TMGB=	$(PDP7_CMDSRC)/t7.s $(PDP7_CMDSRC)/t8.s \
 all:	tmgl7b.s test.ok
 
 test.ok: tmgl7a
-	./run_tests.sh
+	./7tests.sh
 	date > test.ok
 
 # tmgl7a.t is a PDP-11 style source file, not a PDP-7 style source file
