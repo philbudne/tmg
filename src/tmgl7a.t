@@ -46,7 +46,7 @@ pr2:	comment\pr2
 first:	parse(( fref = { <st=0100> * <fi=0200> * <start: rc x > 1 *}))
 	getfref line = { 2 <:> 1 };
 
-error:	smark ignore(none) any(!<<>>) string(!<<;>>) scopy
+error:	smark ignore(none) any(all) string(nosemi) scopy
 	( <;> = {<;>} | null )
 	= { * <??? error: > 2 1 * };
 
@@ -64,7 +64,7 @@ labels:	label labels/done = { 2 * 1 };
 label:	name <:> = { 1 <:> };
 
 /* dummies, mostly halts */
-last:	= {	<" TEMP:> *
+last:	= {	<" TEMP pdp-11 compat:> *
 		<fail=nuts> *
 		<" distinct halt addr for each:> *
 		<push:	jms halt> *
@@ -74,7 +74,7 @@ last:	= {	<" TEMP:> *
 	  };
 
 comment: </*>
-co1:	ignore(!<<*>>) <*> ignore(none) </>/co1;
+co1:	ignore(nostar) <*> ignore(none) </>/co1;
 
 statement: [csym=0] = {} noelem
 stt1:	bundle	( frag = (1){ 2(nil) * 1(q1) }\stt1
@@ -291,6 +291,11 @@ alpha:	<<0123456789>>
 	<<ABCDEFGHIJKLMNOPQRSTUVWXYZ>>;
 litch:	!<<\>>>;
 none:	<<>>;
+
+/* PLB temp additions for transition to PDP-7: */
+all:	!<<>>;
+nosemi:	!<<;>>;
+nostar:	!<<*>>;
 
 csym:	0;
 fsym:	0;
