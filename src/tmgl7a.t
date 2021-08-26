@@ -12,7 +12,10 @@
  * Ops not used by this file and not present in PDP-7 support code
  * are being reduced/removed.
  *
- * Some rough spots are being smoothed over temporarily
+ * N.B. Due to my insufficiency at TMGL, stubbed out rules
+ * are often replaced by "fail".
+ *
+ * Some rough spots are also being smoothed over temporarily
  * by running output through fix7.py
  *
  * NOTE!! This file likely covered by Caldera Ancient Unix licence, see:
@@ -70,7 +73,7 @@ last:	= {	<" TEMP pdp-11 compat:> *
 		<push:	jms halt> *
 		<tab11:	jms halt> *
 		<diag:	jms halt> *
-		<_f:	jms halt> *
+		<.f:	jms halt> *
 	  };
 
 comment: </*>
@@ -141,7 +144,7 @@ special: <=> (rname | remote(trule))
 	| <*> = (1){ $1 <rx nl> }
 	| <[> expr
 		( <?> = {<ro fi>}
-		| = {<_p>} )
+		| = {<.pop>} )
 		<]> = (1){ 2 * $1 1 };
 
 rname:	( name tabval(pat,npa)/done
@@ -185,7 +188,7 @@ litb:	smark string(litch) scopy <\>/done
 expr:	aopassign | assignment | rv ;
 
 /* PLB: brute force simple VAR =OP CONST
- * NOTE: confine spacial awareness to aop rule.
+ * NOTE: confines spacial awareness to aop rule.
  */
 aop:	<=> ignore(none) infix = { 1 };
 aopassign: rname aop number = { <rm > 3 <; rv > 1 <; > 2 < fi st> };
@@ -210,11 +213,10 @@ prime:
 	| unop prime = { 1 * 2 }
 	| number = { <rv > 1 };
 
-/* PLB: pop value here, after rm? */
 lv:	( rname = { <rm > 1 }
 	| <(> lv <)>
 	| <*> prime = { 1 <; indir> } )
-lv1:	<[>/done bundle expr <]> = { 2 * 1 * <_f> }\lv1;
+lv1:	<[>/done bundle expr <]> = { 2 * 1 * <.f> }\lv1;
 
 assign:	<=> ignore(none) ( infix = { 1 }
 			| = { <_st> } );
