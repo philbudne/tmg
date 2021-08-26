@@ -33,7 +33,7 @@ TMGB=	$(PDP7_CMDSRC)/t7.s $(PDP7_CMDSRC)/t8.s \
 
 all:	tmgl7b.s test.ok
 
-test.ok:
+test.ok: tmgl7a
 	./run_tests.sh
 	date > test.ok
 
