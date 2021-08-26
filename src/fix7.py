@@ -26,6 +26,8 @@ BUILTINS = {
     "string": "string",
 
     # PDP-11 ops (porting aid, until tmgl7a is static)
+    ".pop": ".pop",
+    "_p": ".pop",
     "smark": "mark",
     "ignore": "ign11",
 #   "table": "tab11",
