@@ -1,0 +1,25 @@
+Phil Budne's work to try to bring up TMG on the PDP-7, by back-porting
+the PDP-11 TGML file (that this project is based on).
+
+If you're seeing this file, it should be because you're looking at the
+pb-pdp7 branch of Phil Budne's fork at
+https://github.com/philbudne/tmg/tree/pb-pdp7
+
+My (currently up to date!) notes (including how to build/test) are in
+https://raw.githubusercontent.com/philbudne/pdp7-unix/tmg/misc/tmg-notes.txt
+
+https://github.com/philbudne/pdp7-unix/tree/tmg also contains an
+additional file of support code/declarations (src/other/pbtz.s), and
+an a7out UNIX-7 simulator updated to handle additional opcodes (xct
+and clq) used by src/cmd/t[1-8].s
+
+In my (humble) opinion files in this repository are likely covered by
+Caldera Ancient Unix licence, see:
+
+https://www.bell-labs.com/usr/dmr/www/calderalicense2000.html
+https://slashdot.org/story/02/01/24/0146248/caldera-releases-original-unices-under-bsd-license
+https://www.tuhs.org/Archive/Caldera-license.pdf (dated 2002, covers v6)
+https://www.tech-insider.org/internet/research/2003/0823.html
+
+Phil Budne
+August 26, 2021
