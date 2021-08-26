@@ -48,12 +48,17 @@ tmgl1 tmgl2: build.sh tmgl1.t tmgl2.t tmga.c tmgb.h libs.h tmgc.h
 
 # build local binary (using C port of PDP-11 TMG)
 # that outputs PDP-7 code
+# doesn't return exit status (outputs to stderr)
 tmgl7a: tmg.sh tmgl1 tmgl2 tmgl7a.t
-	./tmg.sh tmgl7a.t tmgl7a
+	./tmg.sh tmgl7a.t tmgl7a.tmp 2>tmgl7a.errs
+	test -s tmgl7a.errs && cat tmgl7a.errs && exit 1
+	mv tmgl7a.tmp tmgl7a
 
 # build PDP-7 tmgl7b.s file using tmgl7a
 tmgl7b.s: tmgl7a tmgl7b.t fix7.py
-	./tmgl7a tmgl7b.t | python fix7.py > tmgl7b.s
+	./tmgl7a tmgl7b.t 2>tmgl7b.errs | python fix7.py > tmgl7b.s.tmp
+	test -s tmgl7b.errs && cat tmgl7b.errs && exit 1
+	mv tmgl7b.s.tmp tmgl7b.s
 
 # make PDP-7 "binary" runnable under a7out
 tmgl7b.7: tmgl7b.s
