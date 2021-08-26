@@ -10,4 +10,6 @@ if [ -s $1 ]; then
     exit 1
 fi
 
+# errs file empty: remove it
+rm -f $1
 exit 0
