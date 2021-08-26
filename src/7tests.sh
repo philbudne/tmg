@@ -12,13 +12,18 @@ for DIR in 7test/[0-9]*; do
 	    echo $DIR make .7 FAILED
 	    exit 1
 	fi
+	if [ -f test.in ]; then
+	    IN=test.in
+	else
+	    IN=/dev/null
+	fi
 	# setting bit zero of console switches prevents automatic core dump!
-	${PDP7_TOOLS}/a7out -n test.7n -s 400000 test.7 < test.in > test.out 2>test.err
+	${PDP7_TOOLS}/a7out -n test.7n -s 400000 test.7 < $IN > test.out 2>test.err
 	# XXX examine test.err file??
 	if cmp test.out test.ref; then
 	    echo $DIR PASSED
 	else
-	    echo $DIR FAILED
+	    echo $DIR FAILED: see test.out and test.err
 	    exit 1
 	fi
     )
