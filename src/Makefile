@@ -85,4 +85,4 @@ clean:
 	rm -rf build
 	rm -f *.tmp *.7 *.7n tmgl7a tmgl7b* *~ \#*
 	rm -f a.out n.out core test.ok
-	rm -f test/*/*.[7s]* test/*/*.log* test/*/core
+	(cd 7test; rm -f */*.[7s]* */*.log* */core */*.out */*.err)
