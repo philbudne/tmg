@@ -12,7 +12,7 @@ TMGA=	$(PDP7_CMDSRC)/t1.s $(PDP7_CMDSRC)/t2.s \
 
 # storage/defns assembled after tmgl generated code
 TMGB=	$(PDP7_CMDSRC)/t7.s $(PDP7_CMDSRC)/t8.s \
-	$(PDP7_UNIX)/src/other/pbtz.s
+	$(PDP7_UNIX)/src/other/pbtmg/tz.s
 
 # implicit rules for creating thing.7 (runnable under a7out)
 # from thing.t using "make thing.7"
